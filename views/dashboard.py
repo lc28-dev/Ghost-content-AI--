@@ -1,84 +1,47 @@
 import streamlit as st
+from src.ai_engine import generate_social_bundle
 
 def show():
-    st.markdown("""
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-        <style>
-        .stApp { background-color: #020202; }
-        
-        /* Section Impact Haut */
-        .hero-header {
-            background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.8)), 
-                        url('https://images.unsplash.com/photo-1531834357221-dc767329742c?q=80&w=2000&auto=format&fit=crop');
-            background-size: cover;
-            background-position: center;
-            height: 700px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            border-bottom: 1px solid rgba(255,255,255,0.05);
-        }
-
-        .title-main {
-            font-size: 5rem; font-weight: 900; color: white;
-            letter-spacing: -2px; margin-bottom: 10px;
-            text-shadow: 0 10px 30px rgba(0,0,0,1);
-        }
-
-        /* Barre Sociale Dynamique */
-        .social-strip {
-            background: rgba(255, 255, 255, 0.03);
-            backdrop-filter: blur(10px);
-            padding: 20px 0;
-            display: flex;
-            justify-content: center;
-            gap: 60px;
-            border-top: 1px solid rgba(255,255,255,0.1);
-            margin-top: -30px;
-        }
-        .social-strip i { font-size: 2.5rem; color: #fff; transition: 0.3s; }
-        .social-strip i:hover { color: #6366f1; transform: scale(1.2); }
-
-        /* Bouton Action Ultra */
-        .stButton>button {
-            background: #fff; color: #000;
-            border-radius: 50px; padding: 20px 50px;
-            font-size: 1.3rem; font-weight: 800; border: none;
-            box-shadow: 0 10px 40px rgba(255,255,255,0.2);
-        }
-        </style>
-
-        <div class="hero-header">
-            <h1 class="title-main">GHOSTCONTENT.</h1>
-            <p style="color: #6366f1; font-size: 1.5rem; font-weight: 700; text-transform: uppercase; letter-spacing: 5px;">
-                Domination Digitale Artisanale
-            </p>
-        </div>
-        
-        <div class="social-strip">
-            <i class="fab fa-instagram"></i>
-            <i class="fab fa-tiktok"></i>
-            <i class="fab fa-facebook-f"></i>
-            <i class="fab fa-linkedin-in"></i>
-        </div>
-    """, unsafe_allow_html=True)
-
-    st.markdown("<br><br><br>", unsafe_allow_html=True)
+    st.markdown("<style>.stApp { background-color: #050505; color: white; }</style>", unsafe_allow_html=True)
     
-    col_l, col_btn, col_r = st.columns([1, 1.5, 1])
-    with col_btn:
-        if st.button("ACCÉDER AU STUDIO →", use_container_width=True):
-            st.session_state.user = True
-            st.rerun()
+    # LISTE TOTALE DES MÉTIERS
+    metiers = [
+        "Maçonnerie & Gros Œuvre", "Menuiserie & Agencement", "Charpente & Toiture",
+        "Plomberie & Chauffage", "Électricité & Domotique", "Peinture & Ravalement",
+        "Carrelage & Sols", "Plâtrerie & Isolation", "Paysagiste & Piscine",
+        "Architecture d'Intérieur", "Cuisiniste", "Serrurerie & Métallerie",
+        "Énergies Renouvelables", "Nettoyage Industriel", "Expertise Bâtiment"
+    ]
 
-    st.markdown("""
-        <div style="text-align:center; padding: 100px 5%;">
-            <h2 style="font-size: 3rem; color: #fff;">Votre savoir-faire mérite l'excellence visuelle.</h2>
-            <p style="color: #666; font-size: 1.4rem; max-width: 800px; margin: 0 auto;">
-                Arrêtez de poster des photos banales sans stratégie. GhostContent utilise l'IA pour créer des récits 
-                qui transforment vos abonnés en clients fidèles.
-            </p>
-        </div>
-    """, unsafe_allow_html=True)
+    st.title("🏛️ Studio GhostContent")
+
+    col_in, col_out = st.columns([1, 1], gap="large")
+
+    with col_in:
+        with st.container(border=True):
+            biz = st.text_input("NOM DE VOTRE ENTREPRISE", placeholder="ex: LUXE BÂTIMENT")
+            industry = st.selectbox("VOTRE MÉTIER", metiers)
+            goal = st.selectbox("OBJECTIF", ["Visibilité", "Signature Devis", "Recrutement"])
+            
+            if st.button("🚀 GÉNÉRER MON CONTENU PRO", use_container_width=True):
+                if biz:
+                    with st.spinner("L'IA forge votre post..."):
+                        st.session_state.result = generate_social_bundle(biz, industry, goal)
+                        st.session_state.biz_name = biz
+                else:
+                    st.error("Précisez le nom de l'entreprise.")
+
+    with col_out:
+        if "result" in st.session_state:
+            st.markdown(f"""
+                <div style="background: white; color: black; border-radius: 20px; overflow: hidden; box-shadow: 0 20px 40px rgba(0,0,0,0.5);">
+                    <div style="padding: 15px; border-bottom: 1px solid #eee; font-weight: 900;">
+                        📱 {st.session_state.biz_name.upper()}
+                    </div>
+                    <img src="https://images.unsplash.com/photo-1581094794329-c8112a89af12?q=80&w=800" style="width: 100%;">
+                    <div style="padding: 20px; font-size: 0.9rem; line-height: 1.5;">
+                        {st.session_state.result}
+                    </div>
+                </div>
+            """, unsafe_allow_html=True)
+            st.button("📋 Copier pour Instagram")
