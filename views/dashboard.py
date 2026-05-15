@@ -4,44 +4,42 @@ from src.ai_engine import generate_social_bundle
 def show():
     st.markdown("<style>.stApp { background: #050505; color: white; }</style>", unsafe_allow_html=True)
     
-    st.markdown("<h1 style='text-align:center;'>🏛️ Studio GhostContent</h1>", unsafe_allow_html=True)
+    st.markdown("<h1 style='text-align:center; padding: 20px;'>🏛️ STUDIO DE CRÉATION</h1>", unsafe_allow_html=True)
     
-    col_input, col_preview = st.columns([1, 1], gap="large")
+    col_in, col_out = st.columns([1, 1.2], gap="large")
 
-    with col_input:
-        st.markdown("### Configuration")
+    with col_in:
         with st.container(border=True):
-            biz = st.text_input("Nom de l'entreprise", placeholder="ex: GUILLIN MAÇONNERIE")
-            industry = st.selectbox("Votre métier", ["Rénovation Prestige", "Charpente & Bois", "Gros Œuvre", "Design Intérieur"])
-            goal = st.selectbox("Objectif stratégique", ["Visibilité (Nouveaux clients)", "Vente (Signer des devis)"])
+            st.subheader("🛠️ Votre Chantier")
+            biz = st.text_input("Nom de l'entreprise", placeholder="ex: MENUISERIE DU RHÔNE")
+            industry = st.selectbox("Domaine d'expertise", ["Rénovation Maison", "Gros Œuvre / Maçonnerie", "Menuiserie / Bois", "Électricité / Domotique"])
+            goal = st.selectbox("Objectif du post", ["Se faire connaître (Visibilité)", "Rassurer le client (Confiance)", "Appel au devis (Vente)"])
             
-            if st.button("🔥 GÉNÉRER LE PACK", use_container_width=True):
+            if st.button("✨ GÉNÉRER LE POST PRO", use_container_width=True):
                 if biz:
-                    with st.spinner("L'IA forge votre contenu..."):
+                    with st.spinner("Rédaction en cours..."):
                         st.session_state.result = generate_social_bundle(biz, industry, goal)
                         st.session_state.biz_name = biz
-                        st.session_state.ind_name = industry
                 else:
-                    st.error("Veuillez entrer un nom.")
+                    st.error("Entrez le nom de l'entreprise.")
 
-    with col_preview:
-        st.markdown("### Aperçu du Post")
+    with col_out:
         if "result" in st.session_state:
-            # Cadre style Instagram
+            st.subheader("📸 Rendu Final")
+            # Simulation d'un post Instagram réaliste
             st.markdown(f"""
-                <div style="background: white; color: black; padding: 20px; border-radius: 20px; border: 1px solid #ddd;">
-                    <div style="display: flex; align-items: center; margin-bottom: 10px;">
-                        <div style="width: 40px; height: 40px; background: #6366f1; border-radius: 50%; margin-right: 10px;"></div>
-                        <b>{st.session_state.biz_name.lower().replace(' ', '_')}</b>
+                <div style="background: white; color: black; padding: 0px; border-radius: 15px; overflow: hidden; border: 1px solid #ddd;">
+                    <div style="padding: 10px; display: flex; align-items: center; border-bottom: 1px solid #eee;">
+                        <div style="width: 32px; height: 32px; background: #6366f1; border-radius: 50%; margin-right: 10px;"></div>
+                        <span style="font-weight: bold; font-size: 0.9rem;">{st.session_state.biz_name.lower().replace(' ','_')}</span>
                     </div>
-                    <img src="https://images.unsplash.com/photo-1504307651254-35680f3344d7?q=80&w=1080" style="width: 100%; border-radius: 10px; margin-bottom: 15px;">
-                    <p style="font-size: 0.9rem; line-height: 1.4;">{st.session_state.result[:250]}...</p>
-                    <p style="color: #999; font-size: 0.8rem;">Voir la suite...</p>
+                    <img src="https://images.unsplash.com/photo-1503387762-592dee58c460?q=80&w=1000" style="width: 100%; display: block;">
+                    <div style="padding: 15px;">
+                        <p style="font-size: 0.9rem; line-height: 1.5; color: #222;">{st.session_state.result}</p>
+                    </div>
                 </div>
             """, unsafe_allow_html=True)
-            
-            with st.expander("Voir le texte complet à copier"):
-                st.write(st.session_state.result)
-                st.button("📋 Copier le texte")
+            st.button("📋 Copier pour Instagram / Facebook")
         else:
-            st.info("Le rendu de votre post apparaîtra ici après génération.")
+            # Image d'attente pro
+            st.image("https://images.unsplash.com/photo-1541888946425-d81bb19480c5?q=80&w=1000", caption="Vos futurs posts ressembleront à ça.")
