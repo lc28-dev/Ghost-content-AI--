@@ -1,55 +1,84 @@
 import streamlit as st
-from src.ai_engine import generate_social_bundle
 
 def show():
-    st.markdown("<style>.stApp { background-color: #050505; color: white; }</style>", unsafe_allow_html=True)
+    st.markdown("""
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+        <style>
+        .stApp { background-color: #020202; }
+        
+        /* Section Impact Haut */
+        .hero-header {
+            background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.8)), 
+                        url('https://images.unsplash.com/photo-1531834357221-dc767329742c?q=80&w=2000&auto=format&fit=crop');
+            background-size: cover;
+            background-position: center;
+            height: 700px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .title-main {
+            font-size: 5rem; font-weight: 900; color: white;
+            letter-spacing: -2px; margin-bottom: 10px;
+            text-shadow: 0 10px 30px rgba(0,0,0,1);
+        }
+
+        /* Barre Sociale Dynamique */
+        .social-strip {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(10px);
+            padding: 20px 0;
+            display: flex;
+            justify-content: center;
+            gap: 60px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            margin-top: -30px;
+        }
+        .social-strip i { font-size: 2.5rem; color: #fff; transition: 0.3s; }
+        .social-strip i:hover { color: #6366f1; transform: scale(1.2); }
+
+        /* Bouton Action Ultra */
+        .stButton>button {
+            background: #fff; color: #000;
+            border-radius: 50px; padding: 20px 50px;
+            font-size: 1.3rem; font-weight: 800; border: none;
+            box-shadow: 0 10px 40px rgba(255,255,255,0.2);
+        }
+        </style>
+
+        <div class="hero-header">
+            <h1 class="title-main">GHOSTCONTENT.</h1>
+            <p style="color: #6366f1; font-size: 1.5rem; font-weight: 700; text-transform: uppercase; letter-spacing: 5px;">
+                Domination Digitale Artisanale
+            </p>
+        </div>
+        
+        <div class="social-strip">
+            <i class="fab fa-instagram"></i>
+            <i class="fab fa-tiktok"></i>
+            <i class="fab fa-facebook-f"></i>
+            <i class="fab fa-linkedin-in"></i>
+        </div>
+    """, unsafe_allow_html=True)
+
+    st.markdown("<br><br><br>", unsafe_allow_html=True)
     
-    # LISTE MASSIVE DES MÉTIERS
-    metiers = [
-        "Maçonnerie / Gros Œuvre", "Menuiserie d'Art", "Charpente & Couverture",
-        "Plomberie & Chauffage", "Électricité & Domotique", "Peinture & Déco",
-        "Carrelage & Dallage", "Plâtrerie & Isolation", "Paysagiste & Espaces Verts",
-        "Piscine & Spa", "Climatisation & PAC", "Serrurerie & Ferronnerie",
-        "Architecture d'Intérieur", "Cuisiniste", "Poseur de Sols", "Vitrerie",
-        "Rénovation Énergétique", "Nettoyage Haute Pression", "Ramoneur",
-        "Exterminateur Professionnel", "Tailleur de Pierre", "Artisan Photographe"
-    ]
+    col_l, col_btn, col_r = st.columns([1, 1.5, 1])
+    with col_btn:
+        if st.button("ACCÉDER AU STUDIO →", use_container_width=True):
+            st.session_state.user = True
+            st.rerun()
 
-    st.markdown("<h1 style='text-align:center; font-size: 3rem; font-weight: 900;'>STUDIO DE CRÉATION.</h1>", unsafe_allow_html=True)
-    
-    col_form, col_render = st.columns([1, 1], gap="large")
-
-    with col_form:
-        st.markdown("### 🛠 Configuration")
-        with st.container(border=True):
-            biz = st.text_input("NOM DE L'ENSEIGNE", placeholder="ex: GUILLIN MAÇONNERIE")
-            industry = st.selectbox("VOTRE MÉTIER", metiers)
-            goal = st.selectbox("OBJECTIF DU POST", ["Visibilité Explosive", "Signature de Devis", "Preuve Sociale"])
-            
-            if st.button("GÉNÉRER LE PACK COMPLET", use_container_width=True):
-                if biz:
-                    with st.spinner("L'IA forge votre image de marque..."):
-                        st.session_state.result = generate_social_bundle(biz, industry, goal)
-                        st.session_state.biz_name = biz
-                        # On assigne une image en fonction du métier
-                        st.session_state.img_url = "https://images.unsplash.com/photo-1541888946425-d81bb19480c5?w=800"
-                else:
-                    st.error("Veuillez renseigner le nom.")
-
-    with col_render:
-        if "result" in st.session_state:
-            st.markdown("### 📱 Rendu Instagram")
-            # Simulation Smartphone
-            st.markdown(f"""
-                <div style="background: #fff; color: #000; border-radius: 30px; padding: 20px; box-shadow: 0 30px 60px rgba(255,255,255,0.1);">
-                    <div style="display:flex; align-items:center; margin-bottom:15px;">
-                        <div style="width:40px; height:40px; border-radius:50%; background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); margin-right:10px;"></div>
-                        <span style="font-weight: 800;">{st.session_state.biz_name.upper()}</span>
-                    </div>
-                    <img src="{st.session_state.img_url}" style="width:100%; border-radius:15px; margin-bottom:15px;">
-                    <div style="font-size: 0.9rem; line-height: 1.6;">
-                        {st.session_state.result}
-                    </div>
-                </div>
-            """, unsafe_allow_html=True)
-            st.button("COPIER POUR LE TÉLÉPHONE")
+    st.markdown("""
+        <div style="text-align:center; padding: 100px 5%;">
+            <h2 style="font-size: 3rem; color: #fff;">Votre savoir-faire mérite l'excellence visuelle.</h2>
+            <p style="color: #666; font-size: 1.4rem; max-width: 800px; margin: 0 auto;">
+                Arrêtez de poster des photos banales sans stratégie. GhostContent utilise l'IA pour créer des récits 
+                qui transforment vos abonnés en clients fidèles.
+            </p>
+        </div>
+    """, unsafe_allow_html=True)
