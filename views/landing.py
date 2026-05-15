@@ -1,70 +1,98 @@
 import streamlit as st
 
 def show():
+    # CSS pour le look "Luxe" et l'image fixe en haut
     st.markdown("""
         <style>
         .stApp { background-color: #050505; }
         
-        .hero-title {
-            font-size: 5rem; font-weight: 900; text-align: center;
-            background: linear-gradient(to right, #ffffff, #666666);
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-            margin-top: 50px; line-height: 1;
+        .hero-bg {
+            background-image: url('https://images.unsplash.com/photo-1581094794329-c8112a89af12?q=80&w=2000&auto=format&fit=crop');
+            background-attachment: fixed;
+            background-size: cover;
+            background-position: center;
+            height: 600px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 0 0 80px 80px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
         }
         
-        .section-box {
-            padding: 100px 20px; text-align: center; color: white;
+        .hero-card {
+            background: rgba(0, 0, 0, 0.7);
+            padding: 50px;
+            border-radius: 30px;
+            backdrop-filter: blur(15px);
+            text-align: center;
+            border: 1px solid rgba(255,255,255,0.1);
+            max-width: 80%;
         }
 
-        .benefit-card {
-            background: #111; border: 1px solid #222; padding: 40px;
-            border-radius: 30px; transition: 0.4s; text-align: left;
+        .section-dark {
+            padding: 100px 10% 50px 10%;
+            background: #050505;
+            color: white;
         }
-        .benefit-card:hover { border-color: #6366f1; transform: translateY(-10px); }
 
-        .big-text { font-size: 1.8rem; color: #999; line-height: 1.6; max-width: 900px; margin: 0 auto; }
+        .benefit-box {
+            background: #0f0f0f;
+            padding: 40px;
+            border-radius: 25px;
+            border: 1px solid #1a1a1a;
+            transition: 0.3s;
+            height: 100%;
+        }
+        .benefit-box:hover { border-color: #6366f1; transform: translateY(-5px); }
         
-        .cta-btn {
-            background: white; color: black; padding: 20px 40px;
-            border-radius: 50px; font-weight: bold; font-size: 1.2rem;
-            text-decoration: none; display: inline-block; margin-top: 30px;
+        .gold-text {
+            background: linear-gradient(90deg, #ffffff, #a1a1a1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-size: 4rem; font-weight: 900;
         }
         </style>
     """, unsafe_allow_html=True)
 
-    # HEADER
-    st.markdown('<h1 class="hero-title">DOMINEZ VOTRE<br>MARCHÉ LOCAL.</h1>', unsafe_allow_html=True)
-    st.markdown('<p class="big-text" style="text-align:center; margin-top:20px;">Transformez votre savoir-faire en une marque de prestige sur les réseaux sociaux.</p>', unsafe_allow_html=True)
+    # --- SECTION 1 : HERO ---
+    st.markdown("""
+        <div class="hero-bg">
+            <div class="hero-card">
+                <h1 class="gold-text">GHOSTCONTENT</h1>
+                <p style="color: #888; font-size: 1.5rem; font-weight: 300;">L'élite de la communication pour les bâtisseurs de demain.</p>
+            </div>
+        </div>
+    """, unsafe_allow_html=True)
+
+    # --- SECTION 2 : L'ARGUMENTAIRE ---
+    st.markdown('<div class="section-dark">', unsafe_allow_html=True)
     
-    if st.button("DÉMARRER LA CRÉATION", use_container_width=True):
-        st.session_state.user = True
-        st.rerun()
-
-    st.markdown("---")
-
-    # ARGUMENTAIRE RÉSEAUX SOCIAUX
-    col1, col2 = st.columns(2, gap="large")
+    col1, col2 = st.columns([1, 1], gap="large")
     with col1:
-        st.markdown("<h2 style='color:white; font-size:3rem;'>Pourquoi vos mains ne suffisent plus ?</h2>", unsafe_allow_html=True)
-        st.write("""
-        <p style='color:#888; font-size:1.2rem;'>
-        Aujourd'hui, le chantier ne s'arrête pas quand vous posez vos outils. 
-        Il s'arrête quand le monde entier voit ce que vous avez été capable de construire.<br><br>
-        Un compte Instagram actif, c'est :<br>
-        <b>• Une preuve de confiance :</b> Vos clients voient vos finitions avant même de vous appeler.<br>
-        <b>• Un filtre anti-curieux :</b> Vous attirez des chantiers à haute valeur ajoutée.<br>
-        <b>• Une avance définitive :</b> Pendant que vos concurrents dorment, vous occupez l'espace numérique.
-        </p>
+        st.markdown("<h2 style='font-size: 3rem;'>Le chantier ne s'arrête jamais.</h2>", unsafe_allow_html=True)
+        st.markdown("""
+            <p style='font-size: 1.2rem; color: #999; line-height: 1.8;'>
+            Un artisan qui ne publie pas est un artisan qui n'existe pas aux yeux du marché actuel.<br><br>
+            <b>Instagram n'est pas un jouet, c'est votre vitrine 24h/24.</b><br>
+            C'est là que vos futurs clients décident si vous êtes digne de confiance. GhostContent 
+            transforme votre expertise technique en une autorité numérique incontestable.
+            </p>
         """, unsafe_allow_html=True)
     with col2:
-        st.image("https://images.unsplash.com/photo-1534398079244-67c8ad85592e?q=80&w=1000&auto=format&fit=crop")
+        st.image("https://images.unsplash.com/photo-1541888946425-d81bb19480c5?auto=format&fit=crop&q=80&w=1000")
 
-    # CARDS
+    st.markdown("<br><br><h2 style='text-align:center;'>Pourquoi nous choisir ?</h2><br>", unsafe_allow_html=True)
+    
+    b1, b2, b3 = st.columns(3)
+    with b1:
+        st.markdown('<div class="benefit-box"><h3>Confiance Totale</h3><p>Montrez vos finitions et rassurez vos prospects avant le premier appel.</p></div>', unsafe_allow_html=True)
+    with b2:
+        st.markdown('<div class="benefit-box"><h3>Gain de Temps</h3><p>Générez vos scripts et visuels en 30 secondes après votre journée.</p></div>', unsafe_allow_html=True)
+    with b3:
+        st.markdown('<div class="benefit-box"><h3>Prestige</h3><p>Distinguez-vous de la concurrence avec un contenu haut de gamme.</p></div>', unsafe_allow_html=True)
+
     st.markdown("<br><br>", unsafe_allow_html=True)
-    c1, c2, c3 = st.columns(3)
-    with c1:
-        st.markdown('<div class="benefit-card"><h3>SCALABILITÉ</h3><p>Ne courez plus après les clients. Laissez-les venir à vous grâce à une image de marque irréprochable.</p></div>', unsafe_allow_html=True)
-    with c2:
-        st.markdown('<div class="benefit-card"><h3>RÉPUTATION</h3><p>Chaque post est une brique de plus dans la forteresse de votre e-réputation locale.</p></div>', unsafe_allow_html=True)
-    with c3:
-        st.markdown('<div class="benefit-card"><h3>VITESSE</h3><p>Produisez en 30 secondes ce qui prendrait 4 heures à une agence de communication.</p></div>', unsafe_allow_html=True)
+    if st.button("✨ LANCER LE GÉNÉRATEUR", use_container_width=True):
+        st.session_state.user = True
+        st.rerun()
+    st.markdown('</div>', unsafe_allow_html=True)
