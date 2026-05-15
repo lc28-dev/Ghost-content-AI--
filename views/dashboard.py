@@ -4,44 +4,44 @@ from src.ai_engine import generate_social_bundle
 def show():
     st.markdown("<style>.stApp { background-color: #050505; color: white; }</style>", unsafe_allow_html=True)
     
-    # LISTE TOTALE DES MÉTIERS
     metiers = [
-        "Maçonnerie & Gros Œuvre", "Menuiserie & Agencement", "Charpente & Toiture",
-        "Plomberie & Chauffage", "Électricité & Domotique", "Peinture & Ravalement",
-        "Carrelage & Sols", "Plâtrerie & Isolation", "Paysagiste & Piscine",
-        "Architecture d'Intérieur", "Cuisiniste", "Serrurerie & Métallerie",
-        "Énergies Renouvelables", "Nettoyage Industriel", "Expertise Bâtiment"
+        "Maçonnerie & Gros Œuvre", "Menuiserie & Ebénisterie", "Charpente & Toiture",
+        "Plomberie & Chauffage", "Électricité & Domotique", "Peinture & Déco",
+        "Carrelage & Sols", "Plâtrerie & Isolation", "Paysagiste & Jardin",
+        "Cuisiniste", "Serrurerie & Ferronnerie", "Rénovation Énergétique",
+        "Climatisation / PAC", "Nettoyage de Façade", "Architecture d'intérieur"
     ]
 
-    st.title("🏛️ Studio GhostContent")
+    st.markdown("<h1 style='text-align:center; padding:20px;'>🏛️ STUDIO GHOSTCONTENT</h1>", unsafe_allow_html=True)
 
     col_in, col_out = st.columns([1, 1], gap="large")
 
     with col_in:
         with st.container(border=True):
-            biz = st.text_input("NOM DE VOTRE ENTREPRISE", placeholder="ex: LUXE BÂTIMENT")
-            industry = st.selectbox("VOTRE MÉTIER", metiers)
-            goal = st.selectbox("OBJECTIF", ["Visibilité", "Signature Devis", "Recrutement"])
+            biz = st.text_input("NOM DE L'ENTREPRISE", placeholder="ex: MENUISERIE DU SUD")
+            industry = st.selectbox("CORPS DE MÉTIER", metiers)
+            goal = st.selectbox("OBJECTIF DU POST", ["Visibilité", "Vente directe", "Confiance client"])
             
-            if st.button("🚀 GÉNÉRER MON CONTENU PRO", use_container_width=True):
+            if st.button("🔥 GÉNÉRER LE POST", use_container_width=True):
                 if biz:
-                    with st.spinner("L'IA forge votre post..."):
+                    with st.spinner("Forgeage du contenu..."):
                         st.session_state.result = generate_social_bundle(biz, industry, goal)
                         st.session_state.biz_name = biz
                 else:
-                    st.error("Précisez le nom de l'entreprise.")
+                    st.error("Nom requis.")
 
     with col_out:
         if "result" in st.session_state:
             st.markdown(f"""
-                <div style="background: white; color: black; border-radius: 20px; overflow: hidden; box-shadow: 0 20px 40px rgba(0,0,0,0.5);">
-                    <div style="padding: 15px; border-bottom: 1px solid #eee; font-weight: 900;">
-                        📱 {st.session_state.biz_name.upper()}
+                <div style="background: white; color: black; border-radius: 25px; overflow: hidden; box-shadow: 0 20px 50px rgba(0,0,0,0.3);">
+                    <div style="padding: 15px; border-bottom: 1px solid #eee; font-weight: bold; display: flex; align-items: center;">
+                        <div style="width: 30px; height: 30px; background: #6366f1; border-radius: 50%; margin-right: 10px;"></div>
+                        {st.session_state.biz_name.upper()}
                     </div>
-                    <img src="https://images.unsplash.com/photo-1581094794329-c8112a89af12?q=80&w=800" style="width: 100%;">
-                    <div style="padding: 20px; font-size: 0.9rem; line-height: 1.5;">
+                    <img src="https://images.unsplash.com/photo-1504307651254-35680f3344d7?w=800" style="width: 100%;">
+                    <div style="padding: 15px; font-size: 0.9rem; line-height: 1.5;">
                         {st.session_state.result}
                     </div>
                 </div>
             """, unsafe_allow_html=True)
-            st.button("📋 Copier pour Instagram")
+            st.button("📋 COPIER LE TEXTE")
